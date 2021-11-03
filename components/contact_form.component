@@ -1,0 +1,113 @@
+import React, { Component } from 'react'
+
+export default class ContactFormComponent extends Component {
+  DATA
+
+  constructor(props) {
+    super(props)
+
+    this.eventName = this.eventName.bind(this)
+    this.eventEmail = this.eventEmail.bind(this)
+    this.eventContact = this.eventContact.bind(this)
+    this.eventMessage = this.eventMessage.bind(this)
+
+    this.onFormSubmit = this.onFormSubmit.bind(this)
+
+    this.state = {
+      usuario: '',
+      senha: '',
+      confirmacao_senha: ''
+    }
+  }
+
+  // Event handlers
+  eventName(event) {
+    this.setState({ usuario: event.target.value })
+  }
+
+  eventEmail(event) {
+    this.setState({ senha: event.target.value })
+  }
+
+  eventContact(event) {
+    this.setState({ confirmacao_senha: event.target.value })
+  }
+
+  onFormSubmit(event) {
+    event.preventDefault()
+  }
+
+  componentDidMount() {
+    this.DATA = JSON.parse(localStorage.getItem('contact_form'))
+
+    if (localStorage.getItem('contact_form')) {
+      this.setState({
+        usuario: this.DATA.usuario,
+        senha: this.DATA.senha,
+        confirmacao_senha: this.DATA.confirmacao_senha
+      })
+    } else {
+      this.setState({
+        usuario: '',
+        senha: '',
+        confirmacao_senha: ''
+      })
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    localStorage.setItem('contact_form', JSON.stringify(nextState))
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <div className="card">
+          <div className="card-body">
+            <form onSubmit={this.onFormSubmit}>
+              <div className="form-group mb-3">
+                <label>
+                  <strong>Name</strong>
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={this.state.usuario}
+                  onChange={this.eventName}
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label>
+                  <strong>Email</strong>
+                </label>
+                <input
+                  type="email"
+                  className="form-control"
+                  value={this.state.senha}
+                  onChange={this.eventEmail}
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label>
+                  <strong>Contact</strong>
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={this.state.confirmacao_senha}
+                  onChange={this.eventContact}
+                />
+              </div>
+
+              <div className="d-grid mt-3">
+                <button type="submit" className="btn btn-primary btn-block">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
